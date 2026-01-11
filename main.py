@@ -1,10 +1,15 @@
 import json
 import os
-import re
-import math
 from pathlib import Path
 
 def load_stats(filename):
+    """
+    Load and return JSON stats from `filename`.
+
+    Accepts a string or pathlib.Path. Returns the parsed dict on success,
+    or None on error (file missing, unreadable, or invalid JSON).
+    """
+    
     if not os.path.exists(filename):
         print(f"\n❌ ERROR: File '{filename}' not found.")
         return None
@@ -19,53 +24,7 @@ def get_stat(data, category, key):
     cat_data = data.get("stats", {}).get(f"minecraft:{category}", {}) 
     return cat_data.get(full_key, 0)
 
-def parse_log_displacement(log_filename):
-    """
-    Scans the log file for X_Pos and Z_Pos entries to find the 
-    Maximum Displacement (furthest Euclidean distance from the start).
-    """
-    if not os.path.exists(log_filename):
-        return None
-
-    # Regex to match the Command Block output we set up
-    # Looks for "X_Pos: 123" and "Z_Pos: -456"
-    x_pattern = re.compile(r"\[Render thread/INFO\]: (?!.*<).+X_Pos:\s*(-?\d+)")
-    z_pattern = re.compile(r"\[Render thread/INFO\]: (?!.*<).+Z_Pos:\s*(-?\d+)")
-
-    coords = []
-    current_x = None
-
-    # 1. Extract all coordinate pairs
-    with open(log_filename, 'r', encoding='utf-8', errors='ignore') as f:
-        for line in f:
-            # Check for X
-            x_match = x_pattern.search(line)
-            if x_match:
-                current_x = int(x_match.group(1))
-                continue
-            
-            # Check for Z (and pair it with the most recent X)
-            z_match = z_pattern.search(line)
-            if z_match and current_x is not None:
-                current_z = int(z_match.group(1))
-                coords.append((current_x, current_z))
-                current_x = None # Reset for next pair
-
-    if not coords:
-        return 0.0
-
-    # 2. Calculate Max Displacement
-    # We assume the first logged coordinate is the "Start Point"
-    start_x, start_z = coords[0]
-    max_displacement = 0.0
-
-    for x, z in coords:
-        # Euclidean Distance formula: sqrt((x2-x1)^2 + (z2-z1)^2)
-        dist = math.sqrt((x - start_x)**2 + (z - start_z)**2)
-        if dist > max_displacement:
-            max_displacement = dist
-
-    return max_displacement
+# Displacement/drift logic removed per request.
 
 def check_tier_progress(data):
     """Evaluates the agent against the 8-stage Tech Tree."""
@@ -142,26 +101,9 @@ def main():
                 total_cm = walk + crouch + sprint + climb
                 total_blocks_json = total_cm / 100  # Total Path Length
 
-                # --- DISPLACEMENT (FROM LOG) ---
-                # Look for a log file with the same name (e.g. Run1.json -> Run1.log)
-                log_file_path = f.with_suffix(".log")
-                max_displacement = parse_log_displacement(log_file_path)
-
-                report_lines.append("\n📐 SPATIAL ANALYSIS (Drift Score)")
+                # --- SPATIAL ANALYSIS ---
+                report_lines.append("\n📐 SPATIAL ANALYSIS")
                 report_lines.append(f"   Total Distance (Path):   {total_blocks_json:,.2f} blocks")
-                
-                if max_displacement is not None:
-                    report_lines.append(f"   Max Displacement (Line): {max_displacement:,.2f} blocks")
-                    
-                    # Calculate Drift Score (Distance / Displacement)
-                    # Score of 1.0 = Perfect straight line. Higher score = More wandering.
-                    if max_displacement > 0:
-                        drift_score = total_blocks_json / max_displacement
-                        report_lines.append(f"   🌀 DRIFT SCORE:          {drift_score:.2f}")
-                    else:
-                        report_lines.append("   🌀 DRIFT SCORE:          0.0 (No movement from spawn)")
-                else:
-                    report_lines.append("   [!] Log file not found. Cannot calculate Displacement.")
 
                 # --- DEATHS ---
                 deaths = get_stat(stats, "custom", "deaths")
