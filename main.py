@@ -65,8 +65,12 @@ def check_tier_progress(data):
     if has_diamond_ore: achieved_tiers.append("TIER 6: DEEP MINING")
 
     # TIER 7: MASTERY
-    if "minecraft:diamond_pickaxe" in crafted or "minecraft:enchanting_table" in crafted:
+    if "minecraft:diamond_pickaxe" in crafted:
         achieved_tiers.append("TIER 7: MASTERY")
+
+    # TIER 8: LEGENDARY CRAFTSMANSHIP
+    if "minecraft:enchanting_table" in crafted or "minecraft:obsidian" in crafted:
+        achieved_tiers.append("TIER 8: LEGENDARY CRAFTSMANSHIP")
 
     return achieved_tiers
 
