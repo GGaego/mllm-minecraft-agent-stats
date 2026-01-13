@@ -55,21 +55,20 @@ def check_tier_progress(data):
     if has_iron_ore: achieved_tiers.append("TIER 4: RAW IRON")
 
     # TIER 5: IRON INGOT
-    if "minecraft:iron_ingot" in picked_up: achieved_tiers.append("TIER 5: IRON INGOT")
+    if "minecraft:iron_ingot" in crafted: achieved_tiers.append("TIER 5: IRON INGOT")
 
-    # TIER 5: IRON TOOLS
-    if "minecraft:iron_pickaxe" in crafted: achieved_tiers.append("TIER 5: IRON TOOLS")
+    # TIER 6: IRON TOOLS
+    if "minecraft:iron_pickaxe" in crafted: achieved_tiers.append("TIER 6: IRON TOOLS")
 
-    # TIER 6: DIAMOND
+    # TIER 7: DIAMOND
     has_diamond_ore = "minecraft:diamond_ore" in mined or "minecraft:deepslate_diamond_ore" in mined or "minecraft:diamond" in picked_up
-    if has_diamond_ore: achieved_tiers.append("TIER 6: DIAMOND")
+    if has_diamond_ore: achieved_tiers.append("TIER 7: DIAMOND")
 
-    # TIER 7: DIAMOND TOOLS
-    if "minecraft:diamond_pickaxe" in crafted: achieved_tiers.append("TIER 7: DIAMOND TOOLS")
+    # TIER 8: DIAMOND TOOLS
+    if "minecraft:diamond_pickaxe" in crafted: achieved_tiers.append("TIER 8: DIAMOND TOOLS")
 
-    # TIER 8: OBSIDIAN
-    if "minecraft:obsidian" in crafted: achieved_tiers.append("TIER 8: OBSIDIAN")
-
+    # TIER 9: OBSIDIAN
+    if "minecraft:obsidian" in crafted: achieved_tiers.append("TIER 9: OBSIDIAN")
     return achieved_tiers
 
 def main():
