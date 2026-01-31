@@ -16,11 +16,11 @@ The script processes raw Minecraft `.json` stats files (typically found in the `
 
 ## 🛠️ Installation & Setup
 
-1.  **Requirement:** Python 3.6 or higher.
+1.  **Requirement:** Python 3.8 or higher.
 2.  **Project Structure:** Ensure your directory is organized as follows:
     ```text
     .
-    ├── stat_extractor.py    # The script provided
+    ├── main.py    # The script provided
     └── UUID/                # Create this folder
         ├── agent_01.json    # Place your Minecraft .json files here
         └── agent_02.json
