@@ -52,7 +52,7 @@ Run the script from your terminal:
 python main.py
 ```
 
-## 📄 Output
+## Output
 
 The script will create a `reports/` directory and generate a `.txt` file for every JSON file it processes. Each report includes:
 
@@ -61,10 +61,10 @@ The script will create a `reports/` directory and generate a `.txt` file for eve
 * **Material Progression:** The material progression tiers reached.
 * **Unique Items:** A list of every unique item the agent obtained at any point.
 
-## 📖 Research Citation
+## 📖 Research Paper
 
 This script was developed as the primary data collection tool for the research project:
-**"Vision vs. Text: Quantifying Multimodal Performance in Embodied Reasoning and Long-Horizon Planning"**
+### **"Vision vs. Text: Quantifying Multimodal Performance in Embodied Reasoning and Long-Horizon Planning"**
 
 ### [➔ Read the full paper (PDF)](./Vision_vs_Text.pdf)
 
